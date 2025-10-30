@@ -5,18 +5,17 @@ phases:
     runtime-versions:
       python: 3.13
     commands:
-      - echo "Installing dependencies"
-      - pip install -r requirements.txt
-      - echo "Cloning integration test repo..."
-      - git clone https://github.com/Nexus-Optima/Module-DeckleOptimiser-IntegrationTests.git tests
-      - cd tests
+      - echo "Installing dependencies for Module-DeckleOptimiser Integration Tests"
+      - pip install --upgrade pip
       - pip install -r requirements.txt
 
   build:
     commands:
-      - echo "Running integration tests"
+      - echo "Running integration tests against Module-DeckleOptimiser API"
+      - echo "API_BASE_URL: $API_BASE_URL"
       - pytest --junitxml=test-results.xml -v
 
 artifacts:
   files:
-    - tests/test-results.xml
+    - test-results.xml
+  name: integration-test-results-$(date +%Y-%m-%d-%H-%M-%S)
