@@ -76,13 +76,13 @@ class TestIntegrationSetup:
         import os
         
         # Check if pytest.ini exists
-        assert os.path.exists('pytest.ini')
+        assert os.path.exists('pytest.ini'), f"pytest.ini not found in {os.getcwd()}"
         
         # Check if requirements.txt exists
-        assert os.path.exists('requirements.txt')
+        assert os.path.exists('requirements.txt'), f"requirements.txt not found in {os.getcwd()}"
         
-        # Check if buildspec_test.yml exists
-        assert os.path.exists('buildspec_test.yml')
+        # Check if buildspec.yml exists
+        assert os.path.exists('buildspec.yml'), f"buildspec.yml not found in {os.getcwd()}"
         
         print("Pytest configuration files present")
 
@@ -111,7 +111,11 @@ class TestIntegrationSetup:
 
     def test_buildspec_configuration(self):
         """Test buildspec configuration"""
-        with open('buildspec_test.yml', 'r') as f:
+        import os
+        buildspec_path = 'buildspec.yml'
+        assert os.path.exists(buildspec_path), f"buildspec.yml not found in {os.getcwd()}"
+        
+        with open(buildspec_path, 'r') as f:
             content = f.read()
         
         # Check for key buildspec elements

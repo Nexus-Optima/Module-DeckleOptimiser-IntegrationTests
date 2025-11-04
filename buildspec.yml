@@ -1,21 +1,34 @@
 version: 0.2
 
 phases:
+  pre_build:
+    commands:
+      - echo "Cloning Module-DeckleOptimiser-IntegrationTests repository..."
+      - git clone https://github.com/Nexus-Optima/Module-DeckleOptimiser-IntegrationTests.git || true
+      - cd Module-DeckleOptimiser-IntegrationTests && git checkout main || true
+      - echo "Changed to integration tests directory"
+
   install:
     runtime-versions:
       python: 3.13
     commands:
-      - echo "Installing dependencies for Module-DeckleOptimiser Integration Tests"
-      - pip install --upgrade pip
-      - pip install -r requirements.txt
+      - |
+        cd Module-DeckleOptimiser-IntegrationTests
+        echo "Installing dependencies for Module-DeckleOptimiser Integration Tests"
+        pip install --upgrade pip
+        pip install pytest
+        pip install -r requirements.txt
 
   build:
     commands:
-      - echo "Running integration tests against Module-DeckleOptimiser API"
-      - echo "API_BASE_URL: $API_BASE_URL"
-      - pytest --junitxml=test-results.xml -v
+      - |
+        cd Module-DeckleOptimiser-IntegrationTests
+        echo "Running integration tests against Module-DeckleOptimiser API"
+        echo "API_BASE_URL: $API_BASE_URL"
+        echo "Current directory: $(pwd)"
+        pytest --junitxml=test-results.xml -v
 
 artifacts:
   files:
-    - test-results.xml
+    - Module-DeckleOptimiser-IntegrationTests/test-results.xml
   name: integration-test-results-$(date +%Y-%m-%d-%H-%M-%S)
