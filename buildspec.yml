@@ -10,7 +10,7 @@ phases:
 
   install:
     runtime-versions:
-      python: 3.13
+      python: 3.11
     commands:
       - |
         cd Module-DeckleOptimiser-IntegrationTests
