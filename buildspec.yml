@@ -1,23 +1,27 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - echo "Cloning Module-DeckleOptimiser-IntegrationTests repository..."
-      - git clone https://github.com/Nexus-Optima/Module-DeckleOptimiser-IntegrationTests.git || true
-      - cd Module-DeckleOptimiser-IntegrationTests && git checkout main || true
-      - echo "Changed to integration tests directory"
-
   install:
     runtime-versions:
       python: 3.11
     commands:
       - |
+        echo "Preparing integration test workspace..."
+        if [ ! -d Module-DeckleOptimiser-IntegrationTests ]; then
+          git clone https://github.com/Nexus-Optima/Module-DeckleOptimiser-IntegrationTests.git
+        fi
         cd Module-DeckleOptimiser-IntegrationTests
+        git fetch --all
+        git checkout main || true
         echo "Installing dependencies for Module-DeckleOptimiser Integration Tests"
         pip install --upgrade pip
         pip install pytest
         pip install -r requirements.txt
+        cd ..
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase complete (repository prepared during install)"
 
   build:
     commands:
